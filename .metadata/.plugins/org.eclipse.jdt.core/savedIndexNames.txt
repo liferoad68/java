@@ -1,0 +1,8 @@
+INDEX VERSION 1.127+/Users/yoshizakimichio/GitHub/java/.metadata/.plugins/org.eclipse.jdt.core
+2549404968.index
+2094384040.index
+2851233433.index
+2388597467.index
+2988133416.index
+960576089.index
+2221677348.index
