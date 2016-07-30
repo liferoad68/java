@@ -156,49 +156,99 @@ public class Main {
 }
 
 class TableGenerator {
-    private List<String> titles = null;
 
+    private final String DELIMITER = "|";
+    private final String TITLE_DELIMITER = "-";
+
+    private List<String> titles = null;
     private List<List<String>> dataLists = null;
 
+    /**
+     * コンストラクタ
+     * @param titles
+     * @param dataLists
+     */
     public TableGenerator(List<String> titles, List<List<String>> dataLists) {
         this.titles = titles;
         this.dataLists = dataLists;
     }
 
+    /**
+     * 出力
+     */
     public void systemOutPrint() {
 
         List<Integer> maxLengthList = createMaxLengthList();
 
-        // 見出し区切り出力フォーマット
+        systemOutPrintTitle(maxLengthList);
+        systemOutPrintTitleDelimiter(maxLengthList);
+        systemOutPrintData(maxLengthList);
+    }
+
+    /**
+     * 見出し出力
+     * @param maxLengthList
+     */
+    private void systemOutPrintTitle(List<Integer> maxLengthList) {
         StringBuilder sbTitles = new StringBuilder();
+        for (int i = 0; i < this.titles.size(); i++) {
+            String fillSpaceFormat =getFillSpaceFormat(maxLengthList.get(i));
+            sbTitles.append(DELIMITER);
+            sbTitles.append(" ");
+            sbTitles.append(String.format(fillSpaceFormat, this.titles.get(i)));
+            sbTitles.append(" ");
+        }
+        sbTitles.append(DELIMITER);
+        System.out.println(sbTitles.toString());
+    }
+
+    /**
+     * 見出し区切り出力
+     * @param maxLengthList
+     */
+    private void systemOutPrintTitleDelimiter(List<Integer> maxLengthList) {
         StringBuilder sbDelimiter = new StringBuilder();
         for (int i = 0; i < this.titles.size(); i++) {
-            String format = "%-" + String.format("%d", maxLengthList.get(i)) + "s";
-            sbTitles.append("| ");
-            sbTitles.append(String.format(format, this.titles.get(i)) + " ");
-            sbDelimiter.append("|");
+            sbDelimiter.append(DELIMITER);
             for (int j = 0; j <= maxLengthList.get(i) + 1; j++) {
-                sbDelimiter.append("-");
+                sbDelimiter.append(TITLE_DELIMITER);
             }
         }
-        sbTitles.append("|");
         sbDelimiter.append("|");
-        System.out.println(sbTitles.toString());
         System.out.println(sbDelimiter.toString());
+    }
 
-        // データ出力フォーマット
+    /**
+     * データ出力
+     */
+    public void systemOutPrintData(List<Integer> maxLengthList) {
         for (int i = 0; i < this.dataLists.size(); i++) {
             StringBuilder sbData = new StringBuilder();
             for (int j = 0; j < this.dataLists.get(i).size(); j++) {
-                String format = "%-" + String.format("%d", maxLengthList.get(j)) + "s";
-                sbData.append("| ");
-                sbData.append(String.format(format, this.dataLists.get(i).get(j)) + " ");
+                String fillSpaceFormat =getFillSpaceFormat(maxLengthList.get(j));
+                sbData.append(DELIMITER);
+                sbData.append(" ");
+                sbData.append(String.format(fillSpaceFormat, this.dataLists.get(i).get(j)));
+                sbData.append(" ");
             }
-            sbData.append("|");
+            sbData.append(DELIMITER);
             System.out.println(sbData.toString());
         }
     }
 
+    /**
+     * スペース埋めフォーマット取得
+     * @param fillSpaceLength
+     * @return
+     */
+    private String getFillSpaceFormat(int fillSpaceLength) {
+        return "%-" + String.format("%d", fillSpaceLength) + "s";
+    }
+
+    /**
+     * 最大長リスト生成
+     * @return
+     */
     private List<Integer> createMaxLengthList() {
         List<Integer> maxLengthList = new ArrayList<Integer>();
         for (int i = 0; i < this.titles.size(); i++) {
